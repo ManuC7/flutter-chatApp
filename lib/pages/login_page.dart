@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:chat_app/services/auth_services.dart';
+import 'package:chat_app/services/socket_service.dart';
 
 import 'package:chat_app/helpers/mostrar_alerta.dart';
 import 'package:chat_app/widgets/blue_button.dart';
@@ -58,6 +59,8 @@ class _FormState extends State<_Form> {
   Widget build(BuildContext context) {
 
     final authService = Provider.of<AuthService>( context );
+    final socketService = Provider.of<SocketService>( context );
+
 
     return Container(
       margin: EdgeInsets.only(top: 40),
@@ -86,7 +89,7 @@ class _FormState extends State<_Form> {
                final loginOk = await authService.login( emailCtrl.text.trim(), passCtrl.text.trim() );
 
                 if ( loginOk ) {
-                  // TODO: Conectar a nuestro socket server
+                  socketService.connect();
                   Navigator.pushReplacementNamed(context, 'usuarios');
                 } else {
                   // Mostara alerta
